@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIPster 🍻</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>SIPster <span>🍻</span></h1>
+      <p class="subtitle">Titel? Interpret? Jahr? Wer errät, trinkt nicht.</p>
+    </header>
+
+    <main>
+      <!-- SETUP -->
+      <section id="screen-setup" class="screen">
+        <div class="card">
+          <h2>1. YouTube-Zugang</h2>
+          <p class="hint">
+            SIPster sucht Songs selbst über die YouTube-Suche, damit auch du als
+            Gastgeber:in nicht vorher weißt, was kommt. Dafür braucht es einen
+            kostenlosen
+            <strong>YouTube Data API v3</strong>-Key (Google Cloud Console → API aktivieren →
+            Anmeldedaten → API-Key erstellen).
+          </p>
+          <div class="row">
+            <input id="apiKeyInput" type="password" placeholder="YouTube API-Key einfügen" autocomplete="off" />
+            <button id="saveApiKeyBtn">Speichern</button>
+          </div>
+          <div class="row">
+            <button id="clearCacheBtn" class="secondary">Video-Cache leeren</button>
+            <span id="apiKeyStatus" class="status"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>2. Spieler:innen (min. 2)</h2>
+          <div class="row">
+            <input id="playerNameInput" type="text" placeholder="Name eingeben" />
+            <button id="addPlayerBtn">+ Hinzufügen</button>
+          </div>
+          <ul id="playerList" class="player-list"></ul>
+        </div>
+
+        <div class="card">
+          <h2>Regeln</h2>
+          <ul class="rules">
+            <li>Jede:r startet mit <strong>4 Leben</strong> (max. 4).</li>
+            <li>Titel <em>oder</em> Interpret korrekt genannt → kein Leben verloren.</li>
+            <li>Weder Titel noch Interpret genannt → <strong>ein Leben weg</strong> (= trinken).</li>
+            <li>Zusätzlich das richtige Jahr genannt → <strong>Extra-Leben</strong> (Deckel bei 4).</li>
+            <li>Songpool: <span id="songPoolCount">0</span> Songs, es wird zufällig &amp; ohne Wiederholung gezogen.</li>
+          </ul>
+        </div>
+
+        <button id="startGameBtn" class="primary big" disabled>Spiel starten 🎉</button>
+      </section>
+
+      <!-- GAME -->
+      <section id="screen-game" class="screen hidden">
+        <div id="scoreboard" class="scoreboard"></div>
+        <p class="pool-info">Songs übrig: <span id="songsLeft">0</span></p>
+
+        <div id="currentPlayerBanner" class="current-player-banner"></div>
+
+        <div class="player-area">
+          <div id="ytPlayer"></div>
+          <div id="blindOverlay" class="blind-overlay hidden">🎧 Lied läuft – nicht hinschauen, nur zuhören!</div>
+        </div>
+
+        <p id="roundStatus" class="round-status"></p>
+
+        <div class="controls">
+          <button id="drawSongBtn" class="primary big">🎲 Song ziehen</button>
+          <button id="playBtn" class="primary big hidden">▶️ Abspielen</button>
+          <button id="pauseBtn" class="secondary hidden">⏸️ Pause</button>
+        </div>
+
+        <div id="guessControls" class="guess-controls hidden">
+          <label><input type="checkbox" id="chkTitle" /> Titel richtig genannt</label>
+          <label><input type="checkbox" id="chkArtist" /> Interpret richtig genannt</label>
+          <label><input type="checkbox" id="chkYear" /> Jahr richtig genannt</label>
+          <button id="evaluateBtn" class="primary big">Auswerten ✅</button>
+        </div>
+
+        <div id="revealBox" class="reveal-box hidden"></div>
+
+        <button id="nextRoundBtn" class="primary big hidden">Nächste Runde ➡️</button>
+      </section>
+
+      <!-- END -->
+      <section id="screen-end" class="screen hidden">
+        <div class="card">
+          <h2 id="finalHeadline">🏆 Spiel vorbei!</h2>
+          <div id="finalScoreboard" class="final-scoreboard"></div>
+          <button id="restartBtn" class="primary big">Neues Spiel</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/songs.js"></script>
+    <script src="js/youtube.js"></script>
+    <script src="js/app.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+  </body>
+</html>
